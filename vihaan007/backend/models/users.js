@@ -5,10 +5,27 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         uniqiue: true,
-        minlength: 3
     },
 
+    email: {
+        type: String,
+        required: true,
+        uniqiue: true,
+    },
+    password: {
+        type: String,
+        required: true,
 
+    },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
+
+
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('User', userSchema);
