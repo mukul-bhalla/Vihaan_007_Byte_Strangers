@@ -1,14 +1,15 @@
 const express = require('express');
 const bnbs = require('../controllers/bnb')
 const createError = require('../utils/error');
+const verifyAdmin = require('../utils/verifyToken');
 const router = express.Router();
 
-router.post('/', bnbs.createBnb)
+router.post('/', verifyAdmin, bnbs.createBnb)
 
 
-router.put('/:id', bnbs.updateBnb)
+router.put('/:id', verifyAdmin, bnbs.updateBnb)
 
-router.delete('/:id', bnbs.deleteBnb)
+router.delete('/:id', verifyAdmin, bnbs.deleteBnb)
 
 
 router.get('/:id', bnbs.getBnb)

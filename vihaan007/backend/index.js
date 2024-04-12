@@ -13,6 +13,8 @@ const authRouter = require('./routes/auth');
 const roomRouter = require('./routes/rooms');
 const bnbRouter = require('./routes/bnbs');
 
+const cookieParser = require('cookie-parser')
+
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DB_URL)
     .then(() => {
@@ -24,6 +26,7 @@ mongoose.connect(process.env.DB_URL)
     })
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 //ROUTERS
@@ -47,6 +50,8 @@ app.use((err, req, res, next) => {
     );
 
 })
+
+
 
 app.get('/', (req, res) => {
     res.send("HELLO");

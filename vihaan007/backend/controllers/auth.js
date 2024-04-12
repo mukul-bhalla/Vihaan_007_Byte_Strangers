@@ -1,6 +1,10 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
 const User = require('../models/users')
 const bcrypt = require('bcryptjs');
 const createError = require('../utils/error');
+const jwt = require('jsonwebtoken')
 module.exports.register = async (req, res, next) => {
     try {
         const salt = bcrypt.genSaltSync(10);
@@ -26,8 +30,17 @@ module.exports.login = async (req, res, next) => {
         const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password)
         if (!isPasswordCorrect)
             return next(createError(400, 'Wrong Password or username!'))
+
+        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT);
+
         const { password, isAdmin, ...otherDetails } = user._doc
-        res.status(200).json(otherDetails)
+
+        res
+            .cookie("access_token", token, {
+                httpOnly: true,
+            })
+            .status(200)
+            .json({ details: { ...otherDetails }, isAdmin });
     } catch (e) {
         next(e);
     }
