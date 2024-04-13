@@ -4,6 +4,10 @@ const createError = require('../utils/error');
 const verifyAdmin = require('../utils/verifyToken');
 const router = express.Router();
 
+router.get("/countByType", bnbs.countByType);
+router.get("/countByCity", bnbs.countByCity);
+router.get("/room/:id", bnbs.getBnbRooms);
+
 router.post('/', verifyAdmin, bnbs.createBnb)
 
 
